@@ -154,9 +154,6 @@ flutter build ios --release
 
 - **chaeminyoon** - [GitHub](https://github.com/chaeminyoon)
 
-## 🙏 참고
-
-이 프로젝트는 ParkingHero의 UI/UX 디자인을 참고하여 Flutter로 재구현되었습니다.
 
 ---
 
