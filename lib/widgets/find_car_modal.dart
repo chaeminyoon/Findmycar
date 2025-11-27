@@ -93,7 +93,7 @@ class _FindCarModalState extends State<FindCarModal> {
                     child: Row(
                       children: [
                         Text(
-                          'Compass',
+                          '나침반',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -138,7 +138,7 @@ class _FindCarModalState extends State<FindCarModal> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'AR',
+                          'AR 모드',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -244,7 +244,7 @@ class _FindCarModalState extends State<FindCarModal> {
             ),
             child: Center(
               child: Text(
-                'Mini Map',
+                '미니맵',
                 style: TextStyle(
                   fontSize: 10,
                   color: AppColors.gray500,
@@ -315,7 +315,7 @@ class _FindCarModalState extends State<FindCarModal> {
                       ),
                       const SizedBox(height: 4),
                       const Text(
-                        'DISTANCE',
+                        '거리',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppColors.gray400,
@@ -331,7 +331,7 @@ class _FindCarModalState extends State<FindCarModal> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                'Hold your phone flat and follow the arrow.',
+                '휴대폰을 수평으로 들고 화살표를 따라가세요.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
@@ -410,7 +410,7 @@ class _FindCarModalState extends State<FindCarModal> {
                   ),
                   const SizedBox(height: 4),
                   const Text(
-                    'Est. walk: 3 min',
+                    '예상 도보 3분',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray400,
@@ -451,7 +451,7 @@ class _FindCarModalState extends State<FindCarModal> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Open KakaoMap Navigation',
+                    '카카오맵 길안내 열기',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

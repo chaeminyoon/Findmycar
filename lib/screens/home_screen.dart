@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Update Location',
+                            '위치 업데이트',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Where did you park?',
+                            '어디에 주차하셨나요?',
                             style: TextStyle(
                               fontSize: 14,
                               color: AppColors.gray400,
@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'FLOOR LEVEL',
+                            '주차 층',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -277,13 +277,13 @@ class _HomeScreenState extends State<HomeScreen>
                                   builder: (context) => AlertDialog(
                                     backgroundColor: AppColors.darkCard,
                                     title: const Text(
-                                      'Enter custom floor',
+                                      '직접 층 입력',
                                       style: TextStyle(color: AppColors.white),
                                     ),
                                     content: TextField(
                                       style: const TextStyle(color: AppColors.white),
                                       decoration: InputDecoration(
-                                        hintText: 'e.g. 5F, B5',
+                                        hintText: '예: 5F, B5',
                                         hintStyle: const TextStyle(color: AppColors.gray600),
                                         filled: true,
                                         fillColor: AppColors.darkInput,
@@ -300,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     actions: [
                                       TextButton(
                                         onPressed: () => Navigator.of(context).pop(),
-                                        child: const Text('Cancel'),
+                                        child: const Text('취소'),
                                       ),
                                     ],
                                   ),
@@ -321,9 +321,9 @@ class _HomeScreenState extends State<HomeScreen>
                                     style: BorderStyle.solid,
                                   ),
                                 ),
-                                child: const Center(
+                                  child: const Center(
                                   child: Text(
-                                    'Other',
+                                    '기타 입력',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -347,7 +347,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'ZONE / PILLAR',
+                            '구역 / 기둥',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -366,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen>
                           fontWeight: FontWeight.bold,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'e.g. A-01',
+                          hintText: '예: A-01',
                           hintStyle: const TextStyle(
                             color: AppColors.gray600,
                             fontSize: 24,
@@ -402,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'NOTE (OPTIONAL)',
+                            '메모 (선택)',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -421,7 +421,7 @@ class _HomeScreenState extends State<HomeScreen>
                           fontSize: 14,
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Near the elevator, green pillar...',
+                          hintText: '예: 엘리베이터 옆 녹색 기둥...',
                           hintStyle: const TextStyle(color: AppColors.gray600),
                           filled: true,
                           fillColor: AppColors.darkInput,
@@ -472,7 +472,7 @@ class _HomeScreenState extends State<HomeScreen>
                               
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Location updated successfully'),
+                                  content: Text('차량 위치가 저장되었습니다'),
                                   duration: Duration(seconds: 2),
                                   backgroundColor: AppColors.brandGreen,
                                 ),
@@ -494,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen>
                               Icon(Icons.check, size: 20),
                               SizedBox(width: 8),
                               Text(
-                                'Update Location',
+                                '위치 저장',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -766,7 +766,7 @@ class _HomeScreenState extends State<HomeScreen>
                 const SizedBox(height: 32),
                 // 텍스트
                 const Text(
-                  'Auto-Detect Active',
+                  '자동 감지 활성화됨',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -777,7 +777,7 @@ class _HomeScreenState extends State<HomeScreen>
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Text(
-                    "We'll automatically record your location when you disconnect from Bluetooth.",
+                    '블루투스 연결이 끊기면 자동으로 주차 위치를 기록합니다.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
@@ -811,7 +811,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Icon(Icons.location_on, size: 18),
                       SizedBox(width: 8),
                       Text(
-                        'Park Here Manually',
+                        '수동으로 위치 저장',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
@@ -1105,7 +1105,7 @@ class _HomeScreenState extends State<HomeScreen>
                           children: [
                             // 제목과 편집 버튼
                             const Text(
-                              'Current Spot',
+                              '현재 주차 위치',
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -1184,7 +1184,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           ),
                                           const SizedBox(width: 6),
                                           Text(
-                                            '${location.floor} Floor',
+                                            '${location.floor}층',
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
@@ -1247,7 +1247,7 @@ class _HomeScreenState extends State<HomeScreen>
                                             ),
                                             const SizedBox(width: 6),
                                             Text(
-                                              'Parked at ${location.timestamp.hour.toString().padLeft(2, '0')}:${location.timestamp.minute.toString().padLeft(2, '0')}',
+                                              '주차 시간 ${location.timestamp.hour.toString().padLeft(2, '0')}:${location.timestamp.minute.toString().padLeft(2, '0')}',
                                               style: const TextStyle(
                                                 fontSize: 14,
                                                 color: AppColors.gray400,
@@ -1278,7 +1278,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 Expanded(
                                   child: _buildQuickActionButton(
                                     icon: Icons.camera_alt,
-                                    label: 'Add Photo',
+                                    label: '사진 추가',
                                     color: AppColors.brandGreen,
                                   ),
                                 ),
@@ -1286,7 +1286,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 Expanded(
                                   child: _buildQuickActionButton(
                                     icon: Icons.mic,
-                                    label: 'Voice Memo',
+                                    label: '음성 메모',
                                     color: AppColors.blue400,
                                   ),
                                 ),
@@ -1326,7 +1326,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
-                                      '"${location.memo ?? "Parked next to the elevators, green zone."}"',
+                                      '"${location.memo ?? "엘리베이터 옆 녹색 존에 주차했습니다."}"',
                                       style: const TextStyle(
                                         fontSize: 14,
                                         color: AppColors.gray400,
@@ -1407,8 +1407,8 @@ class _HomeScreenState extends State<HomeScreen>
                   const SizedBox(width: 12),
                   Text(
                     _isDefaultLocation(location) 
-                        ? 'Update Car Location' 
-                        : 'Find My Car',
+                        ? '차량 위치 업데이트' 
+                        : '차량 찾기 시작',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

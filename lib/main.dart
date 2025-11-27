@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       create: (_) => AppState()
         ..setParkingStatus(ParkingStatus.driving), // 초기 상태를 DRIVING으로 설정 (주차 위치 없음)
       child: MaterialApp(
-        title: 'Where Is My Car',
+        title: '내 차 어디에',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
         home: const MainScreen(),

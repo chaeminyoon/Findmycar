@@ -36,7 +36,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'History',
+                  '주차 기록',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -58,7 +58,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     controller: _searchController,
                     style: const TextStyle(color: AppColors.white),
                     decoration: InputDecoration(
-                      hintText: 'Search date or location...',
+                      hintText: '날짜 또는 위치를 검색하세요...',
                       hintStyle: const TextStyle(
                         color: AppColors.gray600,
                         fontSize: 14,
@@ -90,7 +90,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Weekly Usage',
+                          '주간 이용 시간',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -126,7 +126,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 16),
                   child: Text(
-                    'Recent',
+                    '최근 기록',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -162,7 +162,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                final days = ['월', '화', '수', '목', '금', '토', '일'];
                 if (value.toInt() >= 0 && value.toInt() < days.length) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8),
@@ -356,7 +356,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             ),
                           ),
                           child: const Text(
-                            '"Parked near elevator, column C-4..."',
+                            '"엘리베이터 근처 C-4 기둥에 주차..."',
                             style: TextStyle(
                               fontSize: 12,
                               color: AppColors.gray400,
@@ -377,7 +377,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: const [
                           Text(
-                            'Details',
+                            '상세 보기',
                             style: TextStyle(
                               fontSize: 12,
                               color: AppColors.gray400,

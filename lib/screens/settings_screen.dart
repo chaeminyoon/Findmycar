@@ -22,7 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Settings',
+              '설정',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -32,13 +32,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 24),
             // Connectivity 섹션
             _buildSection(
-              title: 'CONNECTIVITY',
+              title: '연결 설정',
               children: [
                 _buildSettingItem(
                   icon: Icons.bluetooth,
                   iconColor: AppColors.blue400,
-                  title: 'Auto-Detect Parking',
-                  subtitle: 'Use Bluetooth to detect engine off',
+                  title: '자동 주차 감지',
+                  subtitle: '블루투스로 시동 꺼짐 감지',
                   trailing: _buildToggle(_autoDetectEnabled, (value) {
                     setState(() => _autoDetectEnabled = value);
                   }),
@@ -46,8 +46,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _buildSettingItem(
                   icon: Icons.layers,
                   iconColor: AppColors.purple400,
-                  title: 'Live Activities',
-                  subtitle: 'Show timer on Lock Screen',
+                  title: '라이브 액티비티',
+                  subtitle: '잠금 화면에 타이머 표시',
                   trailing: _buildToggle(_liveActivitiesEnabled, (value) {
                     setState(() => _liveActivitiesEnabled = value);
                   }),
@@ -57,12 +57,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 24),
             // Preferences 섹션
             _buildSection(
-              title: 'PREFERENCES',
+              title: '환경 설정',
               children: [
                 _buildSettingItem(
                   icon: Icons.notifications,
                   iconColor: AppColors.yellow400,
-                  title: 'Notifications',
+                  title: '알림 설정',
                   trailing: const Icon(
                     Icons.chevron_right,
                     size: 18,
@@ -73,7 +73,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _buildSettingItem(
                   icon: Icons.security,
                   iconColor: AppColors.green400,
-                  title: 'Privacy & Permissions',
+                  title: '개인정보 및 권한',
                   trailing: const Icon(
                     Icons.chevron_right,
                     size: 18,
@@ -87,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // 버전 정보
             const Center(
               child: Text(
-                'ParkingHero v1.0.2',
+                '버전 ParkingHero v1.0.2',
                 style: TextStyle(
                   fontSize: 12,
                   color: AppColors.gray600,
@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: TextButton(
                 onPressed: () {},
                 child: const Text(
-                  'Reset All Data',
+                  '모든 데이터 초기화',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

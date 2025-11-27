@@ -33,7 +33,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Nearby',
+                  '주변 주차장',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
               ),
             ),
             child: const Text(
-              'Map View Simulation',
+              '지도 화면 예시',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -181,17 +181,17 @@ class _NearbyScreenState extends State<NearbyScreen> {
               children: [
                 _buildFilterChip(
                   icon: Icons.tune,
-                  label: 'Distance',
+                  label: '거리순',
                   isActive: true,
                 ),
                 const SizedBox(width: 8),
                 _buildFilterChip(
-                  label: 'Lowest Price',
+                  label: '최저가',
                   isActive: false,
                 ),
                 const SizedBox(width: 8),
                 _buildFilterChip(
-                  label: 'Available Spots',
+                  label: '빈자리',
                   isActive: false,
                 ),
               ],
@@ -295,7 +295,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                           ),
                         ),
                         child: const Text(
-                          'FULL',
+                          '만차',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -310,7 +310,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                 Row(
                   children: [
                     Text(
-                      '${spot.distance}m away',
+                      '${spot.distance}m 거리',
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.gray400,
@@ -327,7 +327,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      '₩${spot.price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}/hr',
+                      '₩${spot.price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}/시간',
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.gray400,

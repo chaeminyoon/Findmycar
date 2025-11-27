@@ -31,22 +31,22 @@ class BottomNav extends StatelessWidget {
             children: [
               _buildNavItem(
                 icon: Icons.directions_car,
-                label: 'My Car',
+                label: '내 차량',
                 tab: AppTab.home,
               ),
               _buildNavItem(
                 icon: Icons.location_on,
-                label: 'Nearby',
+                label: '주변',
                 tab: AppTab.nearby,
               ),
               _buildNavItem(
                 icon: Icons.history,
-                label: 'History',
+                label: '기록',
                 tab: AppTab.history,
               ),
               _buildNavItem(
                 icon: Icons.settings,
-                label: 'Settings',
+                label: '설정',
                 tab: AppTab.settings,
               ),
             ],
