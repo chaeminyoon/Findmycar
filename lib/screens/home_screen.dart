@@ -5,6 +5,7 @@ import '../models/types.dart';
 import '../providers/app_state.dart';
 import '../theme/app_colors.dart';
 import '../services/location_service.dart';
+import '../widgets/floor_selector.dart';
 
 /// 홈 화면 (주차 상태에 따라 DRIVING/PARKED UI 표시)
 class HomeScreen extends StatefulWidget {
@@ -117,8 +118,6 @@ class _HomeScreenState extends State<HomeScreen>
     final zoneController = TextEditingController(text: location.zone);
     final noteController = TextEditingController(text: location.memo ?? '');
 
-    const commonFloors = ['B4', 'B3', 'B2', 'B1', '1F', '2F', '3F', '4F'];
-
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -199,142 +198,11 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 층 선택
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.business,
-                            size: 14,
-                            color: AppColors.brandGreen,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            '주차 층',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.brandGreen,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      // 층 선택 버튼들
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ...commonFloors.map((floor) {
-                              final isSelected = selectedFloor == floor;
-                              return GestureDetector(
-                                onTap: () => setState(() => selectedFloor = floor),
-                                child: Container(
-                                  width: 48,
-                                  height: 48,
-                                  margin: const EdgeInsets.only(right: 8),
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        ? AppColors.brandGreen
-                                        : AppColors.darkInput,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? AppColors.brandGreen
-                                          : AppColors.white5,
-                                      width: 1,
-                                    ),
-                                    boxShadow: isSelected
-                                        ? [
-                                            BoxShadow(
-                                              color: AppColors.brandGreen.withOpacity(0.3),
-                                              blurRadius: 15,
-                                              spreadRadius: 0,
-                                            ),
-                                          ]
-                                        : null,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      floor,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: isSelected
-                                            ? AppColors.darkBg
-                                            : AppColors.gray400,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                            // Other 버튼
-                            GestureDetector(
-                              onTap: () async {
-                                final result = await showDialog<String>(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    backgroundColor: AppColors.darkCard,
-                                    title: const Text(
-                                      '직접 층 입력',
-                                      style: TextStyle(color: AppColors.white),
-                                    ),
-                                    content: TextField(
-                                      style: const TextStyle(color: AppColors.white),
-                                      decoration: InputDecoration(
-                                        hintText: '예: 5F, B5',
-                                        hintStyle: const TextStyle(color: AppColors.gray600),
-                                        filled: true,
-                                        fillColor: AppColors.darkInput,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                      onSubmitted: (value) {
-                                        if (value.isNotEmpty) {
-                                          Navigator.of(context).pop(value);
-                                        }
-                                      },
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.of(context).pop(),
-                                        child: const Text('취소'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                if (result != null) {
-                                  setState(() => selectedFloor = result);
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  color: AppColors.darkInput,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: AppColors.white10,
-                                    width: 1,
-                                    style: BorderStyle.solid,
-                                  ),
-                                ),
-                                  child: const Center(
-                                  child: Text(
-                                    '기타 입력',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.gray400,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      FloorSelector(
+                        initialFloor: selectedFloor,
+                        onFloorChanged: (value) {
+                          setState(() => selectedFloor = value);
+                        },
                       ),
                       const SizedBox(height: 24),
                       // 구역 입력
