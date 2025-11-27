@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../models/types.dart';
 import '../providers/app_state.dart';
 import '../theme/app_colors.dart';
@@ -23,6 +28,11 @@ class _HomeScreenState extends State<HomeScreen>
   String? _currentAddress;
   late AnimationController _swipeAnimationController;
   Offset _swipeOffset = Offset.zero;
+  final ImagePicker _imagePicker = ImagePicker();
+  final stt.SpeechToText _speechToText = stt.SpeechToText();
+  bool _speechAvailable = false;
+  bool _isListening = false;
+  String? _voiceMemo;
 
   @override
   void initState() {
@@ -34,11 +44,13 @@ class _HomeScreenState extends State<HomeScreen>
     _startTimer();
     _startScanningAnimation();
     _loadCurrentLocation();
+    _initSpeech();
   }
 
   @override
   void dispose() {
     _swipeAnimationController.dispose();
+    _speechToText.stop();
     super.dispose();
   }
 
@@ -60,6 +72,12 @@ class _HomeScreenState extends State<HomeScreen>
         // AppState에도 업데이트
         final appState = context.read<AppState>();
         appState.setCurrentAddress(_currentAddress);
+        final current = appState.currentLocation;
+        if (current != null) {
+          setState(() {
+            _voiceMemo = current.memo;
+          });
+        }
       } else {
         if (mounted) {
           setState(() {
@@ -336,6 +354,9 @@ class _HomeScreenState extends State<HomeScreen>
                               );
                               
                               appState.setCurrentLocation(updatedLocation);
+                setState(() {
+                  _voiceMemo = updatedLocation.memo;
+                });
                               Navigator.of(context).pop();
                               
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -418,6 +439,9 @@ class _HomeScreenState extends State<HomeScreen>
         appState.setCurrentLocation(parkingLocation);
         appState.setCurrentAddress(locationData['address'] as String);
         appState.setParkingStatus(ParkingStatus.parked);
+        setState(() {
+          _voiceMemo = parkingLocation.memo;
+        });
 
         if (mounted) {
           Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
@@ -983,29 +1007,16 @@ class _HomeScreenState extends State<HomeScreen>
                             const SizedBox(height: 16),
                             // 이미지 카드
                             Container(
-                              height: 224, // h-56 = 224px
+                              height: 224,
                               decoration: BoxDecoration(
                                 color: AppColors.gray800,
                                 borderRadius: BorderRadius.circular(32),
                               ),
                               child: Stack(
                                 children: [
-                                  // 배경 이미지
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(32),
-                                    child: CachedNetworkImage(
-                                      imageUrl: location.photoUrl ?? 
-                                          'https://picsum.photos/800/600?grayscale',
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      placeholder: (context, url) => Container(
-                                        color: AppColors.gray800,
-                                      ),
-                                      errorWidget: (context, url, error) => Container(
-                                        color: AppColors.gray800,
-                                      ),
-                                    ),
+                                    child: _buildLocationImage(location),
                                   ),
                                   // 그라데이션 오버레이
                                   Container(
@@ -1148,14 +1159,22 @@ class _HomeScreenState extends State<HomeScreen>
                                     icon: Icons.camera_alt,
                                     label: '사진 추가',
                                     color: AppColors.brandGreen,
+                                    onTap: () => _showPhotoPicker(appState),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
-                                  child: _buildQuickActionButton(
-                                    icon: Icons.mic,
-                                    label: '음성 메모',
-                                    color: AppColors.blue400,
+                                  child: GestureDetector(
+                                    onTapDown: (_) => _startListening(appState),
+                                    onTapUp: (_) => _stopListening(
+                                        savePartial: true, appState: appState),
+                                    onTapCancel: () => _stopListening(),
+                                    child: _buildQuickActionButton(
+                                      icon: _isListening ? Icons.mic : Icons.mic_none,
+                                      label: _isListening ? '듣는 중...' : '음성 메모',
+                                      color: AppColors.blue400,
+                                      isActive: _isListening,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1194,7 +1213,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   Padding(
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
-                                      '"${location.memo ?? "엘리베이터 옆 녹색 존에 주차했습니다."}"',
+                                      '"${_voiceMemo ?? location.memo ?? "엘리베이터 옆 녹색 존에 주차했습니다."}"',
                                       style: const TextStyle(
                                         fontSize: 14,
                                         color: AppColors.gray400,
@@ -1335,46 +1354,261 @@ class _HomeScreenState extends State<HomeScreen>
     return formatted.isEmpty ? address : formatted;
   }
 
+  Widget _buildLocationImage(ParkingLocation location) {
+    final photoUrl = location.photoUrl;
+    if (photoUrl == null || photoUrl.isEmpty) {
+      return Container(
+        color: AppColors.darkInput,
+        child: const Center(
+          child: Icon(
+            Icons.camera_alt_outlined,
+            color: Colors.white38,
+            size: 48,
+          ),
+        ),
+      );
+    }
+    if (photoUrl.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: photoUrl,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        placeholder: (context, url) => Container(color: AppColors.darkInput),
+        errorWidget: (context, url, error) => Container(color: AppColors.darkInput),
+      );
+    }
+    return Image.file(
+      File(photoUrl),
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
+      errorBuilder: (context, error, stackTrace) =>
+          Container(color: AppColors.darkInput),
+    );
+  }
+
   Widget _buildQuickActionButton({
     required IconData icon,
     required String label,
     required Color color,
+    bool isActive = false,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.darkCard,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: AppColors.white5,
-          width: 1,
+        child: Ink(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: isActive
+                ? AppColors.brandGreen.withOpacity(0.08)
+                : AppColors.darkCard,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: isActive ? AppColors.brandGreen : AppColors.white5,
+              width: 1,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: AppColors.darkBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, size: 24, color: color),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: isActive ? AppColors.brandGreen : AppColors.gray300,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: AppColors.darkBg,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, size: 24, color: color),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.gray300,
-            ),
-          ),
-        ],
       ),
     );
   }
+
+  Future<void> _initSpeech() async {
+    final available = await _speechToText.initialize(
+      onStatus: (status) {
+        if (status == 'notListening' || status == 'done') {
+          if (mounted) {
+            setState(() => _isListening = false);
+          }
+        }
+      },
+      onError: (_) {
+        if (mounted) {
+          setState(() => _isListening = false);
+        }
+      },
+    );
+    if (mounted) {
+      setState(() => _speechAvailable = available);
+    }
+  }
+
+  Future<void> _startListening(AppState appState) async {
+    if (_isListening) return;
+
+    final status = await Permission.microphone.request();
+    if (!status.isGranted) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('마이크 권한이 필요합니다.')),
+        );
+      }
+      return;
+    }
+
+    if (!_speechAvailable) {
+      await _initSpeech();
+      if (!_speechAvailable) return;
+    }
+
+    if (appState.currentLocation == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('먼저 차량 위치를 저장해주세요.')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isListening = true;
+    });
+
+    await _speechToText.listen(
+      onResult: (result) {
+        if (!mounted) return;
+        final text = result.recognizedWords;
+        setState(() => _voiceMemo = text);
+        if (result.finalResult && text.isNotEmpty) {
+          _saveVoiceMemo(appState, text);
+        }
+      },
+      listenMode: stt.ListenMode.dictation,
+      localeId: 'ko_KR',
+    );
+  }
+
+  Future<void> _stopListening({bool savePartial = false, AppState? appState}) async {
+    if (!_isListening) return;
+    await _speechToText.stop();
+    if (mounted) {
+      setState(() => _isListening = false);
+    }
+    if (savePartial && appState != null && (_voiceMemo?.isNotEmpty ?? false)) {
+      _saveVoiceMemo(appState, _voiceMemo!);
+    }
+  }
+
+  void _saveVoiceMemo(AppState appState, String text) {
+    final location = appState.currentLocation;
+    if (location == null) return;
+    final updatedLocation = ParkingLocation(
+      id: location.id,
+      floor: location.floor,
+      zone: location.zone,
+      address: location.address,
+      timestamp: location.timestamp,
+      photoUrl: location.photoUrl,
+      memo: text,
+      lat: location.lat,
+      lng: location.lng,
+    );
+    appState.setCurrentLocation(updatedLocation);
+    setState(() => _voiceMemo = text);
+  }
+
+  Future<void> _showPhotoPicker(AppState appState) async {
+    final location = appState.currentLocation;
+    if (location == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('먼저 차량 위치를 저장해주세요.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    final action = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          margin: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: AppColors.darkCard,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppColors.white10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.white10,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: AppColors.brandGreen),
+                title: const Text('카메라로 찍기',
+                    style: TextStyle(color: AppColors.white)),
+                onTap: () => Navigator.of(context).pop('camera'),
+              ),
+              ListTile(
+                leading:
+                    const Icon(Icons.photo_library, color: AppColors.brandGreen),
+                title: const Text('갤러리에서 선택',
+                    style: TextStyle(color: AppColors.white)),
+                onTap: () => Navigator.of(context).pop('gallery'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (action == null) return;
+
+    final ImageSource source =
+        action == 'camera' ? ImageSource.camera : ImageSource.gallery;
+
+    final XFile? file =
+        await _imagePicker.pickImage(source: source, imageQuality: 85);
+    if (file == null) return;
+
+    final updatedLocation = ParkingLocation(
+      id: location.id,
+      floor: location.floor,
+      zone: location.zone,
+      address: location.address,
+      timestamp: DateTime.now(),
+      photoUrl: file.path,
+      memo: location.memo,
+      lat: location.lat,
+      lng: location.lng,
+    );
+
+    appState.setCurrentLocation(updatedLocation);
+    appState.setParkingStatus(ParkingStatus.parked);
+    _startTimer();
+  }
 }
-
-

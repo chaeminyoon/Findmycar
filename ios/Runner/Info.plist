@@ -52,5 +52,13 @@
 	<string>주차 위치를 기록하고 찾기 위해 위치 정보가 필요합니다.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>주차 위치를 기록하고 찾기 위해 위치 정보가 필요합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>주차 위치에 참고용 사진을 추가하기 위해 사진 라이브러리에 접근합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>주차 위치 사진을 촬영하기 위해 카메라 접근이 필요합니다.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>음성 메모를 작성하기 위해 말한 내용을 텍스트로 변환합니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>음성 메모를 기록하기 위해 마이크 접근이 필요합니다.</string>
 </dict>
 </plist>
