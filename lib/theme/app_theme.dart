@@ -8,19 +8,19 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: AppColors.gray950,
+      scaffoldBackgroundColor: AppColors.darkBg,
       colorScheme: const ColorScheme.dark(
-        primary: AppColors.brand500,
-        secondary: AppColors.brand400,
-        surface: AppColors.gray900,
+        primary: AppColors.brandGreen,
+        secondary: AppColors.brandGreen,
+        surface: AppColors.darkCard,
         error: AppColors.rose500,
-        onPrimary: AppColors.white,
-        onSecondary: AppColors.white,
+        onPrimary: AppColors.darkBg,
+        onSecondary: AppColors.darkBg,
         onSurface: AppColors.white,
         onError: AppColors.white,
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: AppColors.gray950,
+        backgroundColor: AppColors.darkBg,
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: IconThemeData(color: AppColors.white),
@@ -31,11 +31,11 @@ class AppTheme {
         ),
       ),
       cardTheme: CardTheme(
-        color: AppColors.gray900,
+        color: AppColors.darkCard,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: AppColors.gray800, width: 1),
+          side: const BorderSide(color: AppColors.white5, width: 1),
         ),
       ),
       textTheme: const TextTheme(

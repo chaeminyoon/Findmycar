@@ -134,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.gray900,
+                    color: AppColors.darkCard,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: AppColors.gray800,
@@ -219,7 +219,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         width: 44,
         height: 24,
         decoration: BoxDecoration(
-          color: value ? AppColors.brand600 : AppColors.gray700,
+          color: value ? AppColors.brandGreen : AppColors.gray700,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Stack(

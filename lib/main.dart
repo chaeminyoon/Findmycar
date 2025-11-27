@@ -22,18 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => AppState()
-        ..setParkingStatus(ParkingStatus.parked)
-        ..setCurrentLocation(
-          ParkingLocation(
-            id: 'current-session',
-            floor: 'B2',
-            zone: 'A-12',
-            address: 'Samsung-ro 123',
-            timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-            lat: 37.5,
-            lng: 127.0,
-          ),
-        ),
+        ..setParkingStatus(ParkingStatus.driving), // 초기 상태를 DRIVING으로 설정 (주차 위치 없음)
       child: MaterialApp(
         title: 'Where Is My Car',
         debugShowCheckedModeBanner: false,
@@ -53,7 +42,7 @@ class MainScreen extends StatelessWidget {
     return Consumer<AppState>(
       builder: (context, appState, _) {
         return Scaffold(
-          backgroundColor: AppColors.gray950,
+          backgroundColor: AppColors.darkBg,
           body: Stack(
             children: [
               // 콘텐츠 영역

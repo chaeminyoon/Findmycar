@@ -30,7 +30,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
-              color: AppColors.gray950,
+              color: AppColors.darkBg,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 // 검색 바
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.gray900,
+                    color: AppColors.darkCard,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: AppColors.gray800,
@@ -202,7 +202,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             barRods: [
               BarChartRodData(
                 toY: hours,
-                color: hours > 4 ? AppColors.brand500 : AppColors.gray700,
+                color: hours > 4 ? AppColors.brandGreen : AppColors.gray700,
                 width: 16,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(4),
@@ -272,7 +272,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.brand400,
+                            color: AppColors.brandGreen,
                           ),
                         ),
                         const SizedBox(height: 4),

@@ -24,9 +24,9 @@ class _NearbyScreenState extends State<NearbyScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
-              color: AppColors.gray900.withOpacity(0.5),
+              color: AppColors.darkBg.withOpacity(0.8),
               border: const Border(
-                bottom: BorderSide(color: AppColors.gray800, width: 1),
+                bottom: BorderSide(color: AppColors.white5, width: 1),
               ),
             ),
             child: Row(
@@ -44,7 +44,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: AppColors.gray800,
+                    color: AppColors.darkCard,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -144,7 +144,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: spot.isCrowded ? AppColors.rose500 : AppColors.brand500,
+                color: spot.isCrowded ? AppColors.rose500 : AppColors.brandGreen,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
@@ -256,7 +256,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.gray900,
+                    color: AppColors.darkCard,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.gray800,
@@ -350,7 +350,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
             child: const Icon(
               Icons.navigation,
               size: 20,
-              color: AppColors.brand500,
+              color: AppColors.brandGreen,
             ),
           ),
         ],

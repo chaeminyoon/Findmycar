@@ -39,24 +39,24 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 현재 위치 주소 (실시간 업데이트용)
+  String? _currentAddress;
+  String? get currentAddress => _currentAddress;
+  
+  void setCurrentAddress(String? address) {
+    _currentAddress = address;
+    notifyListeners();
+  }
+
   // 주차 상태 토글
   void toggleParkingStatus() {
     if (_parkingStatus == ParkingStatus.parked) {
       setParkingStatus(ParkingStatus.driving);
       setCurrentLocation(null);
+      setCurrentAddress(null);
     } else {
       setParkingStatus(ParkingStatus.parked);
-      setCurrentLocation(
-        ParkingLocation(
-          id: 'session-${DateTime.now().millisecondsSinceEpoch}',
-          floor: 'B1',
-          zone: 'F-04',
-          address: 'Teheran-ro 427',
-          timestamp: DateTime.now(),
-          lat: 37.5,
-          lng: 127.0,
-        ),
-      );
+      // 실제 위치는 HomeScreen에서 가져옴
     }
   }
 }
