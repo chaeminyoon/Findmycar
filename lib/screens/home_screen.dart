@@ -359,6 +359,9 @@ class _HomeScreenState extends State<HomeScreen>
                 });
                               Navigator.of(context).pop();
                               
+                              // 타이머 시작
+                              _startTimer();
+                              
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('차량 위치가 저장되었습니다'),
@@ -443,6 +446,9 @@ class _HomeScreenState extends State<HomeScreen>
           _voiceMemo = parkingLocation.memo;
         });
 
+        // 타이머 시작
+        _startTimer();
+
         if (mounted) {
           Navigator.of(context).pop(); // 로딩 다이얼로그 닫기
           ScaffoldMessenger.of(context).showSnackBar(
@@ -483,12 +489,28 @@ class _HomeScreenState extends State<HomeScreen>
     final appState = context.read<AppState>();
     if (appState.parkingStatus == ParkingStatus.parked &&
         appState.currentLocation != null) {
+      // default 위치일 때는 타이머를 시작하지 않음
+      if (_isDefaultLocation(appState.currentLocation)) {
+        setState(() {
+          _elapsedTime = '차량 위치 업데이트를 해주세요';
+        });
+        return;
+      }
+      
       // 1초마다 경과 시간 업데이트
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted && appState.parkingStatus == ParkingStatus.parked) {
           final now = DateTime.now();
           final location = appState.currentLocation;
           if (location != null) {
+            // default 위치가 되었으면 타이머 중지
+            if (_isDefaultLocation(location)) {
+              setState(() {
+                _elapsedTime = '차량 위치 업데이트를 해주세요';
+              });
+              return;
+            }
+            
             final diff = now.difference(location.timestamp);
             final hours = diff.inHours;
             final minutes = diff.inMinutes.remainder(60);
@@ -962,19 +984,25 @@ class _HomeScreenState extends State<HomeScreen>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
-                            Icons.access_time,
+                          Icon(
+                            _isDefaultLocation(location) 
+                                ? Icons.info_outline 
+                                : Icons.access_time,
                             size: 14,
-                            color: AppColors.brandGreen,
+                            color: _isDefaultLocation(location)
+                                ? AppColors.gray500
+                                : AppColors.brandGreen,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             _elapsedTime,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
-                              fontFamily: 'monospace',
-                              color: AppColors.white,
-                              letterSpacing: 1,
+                              fontFamily: _isDefaultLocation(location) ? null : 'monospace',
+                              color: _isDefaultLocation(location)
+                                  ? AppColors.gray500
+                                  : AppColors.white,
+                              letterSpacing: _isDefaultLocation(location) ? 0 : 1,
                             ),
                           ),
                         ],
@@ -1182,7 +1210,7 @@ class _HomeScreenState extends State<HomeScreen>
                             // Note (새 디자인 - 왼쪽 녹색 바)
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                               decoration: BoxDecoration(
                                 color: AppColors.darkCard,
                                 borderRadius: BorderRadius.circular(16),
