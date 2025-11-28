@@ -1143,14 +1143,13 @@ class _HomeScreenState extends State<HomeScreen>
                           ],
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
                       // 정보 영역 (제거 - 이미지 위에 표시됨)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 12),
                             // Quick Actions (새 디자인)
                             Row(
                               children: [
@@ -1179,9 +1178,10 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 16),
                             // Note (새 디자인 - 왼쪽 녹색 바)
                             Container(
+                              width: double.infinity,
                               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                               decoration: BoxDecoration(
                                 color: AppColors.darkCard,
@@ -1214,6 +1214,8 @@ class _HomeScreenState extends State<HomeScreen>
                                     padding: const EdgeInsets.only(left: 20),
                                     child: Text(
                                       '"${_voiceMemo ?? location.memo ?? "엘리베이터 옆 녹색 존에 주차했습니다."}"',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontSize: 14,
                                         color: AppColors.gray400,
@@ -1226,27 +1228,6 @@ class _HomeScreenState extends State<HomeScreen>
                               ),
                             ),
                         const SizedBox(height: 16),
-                        // 스와이프 힌트
-                        Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.swipe,
-                                size: 14,
-                                color: AppColors.gray600,
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                '아래로 또는 오른쪽으로 스와이프하여 운전 모드로 전환',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: AppColors.gray600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                           ],
                         ),
                       ),
